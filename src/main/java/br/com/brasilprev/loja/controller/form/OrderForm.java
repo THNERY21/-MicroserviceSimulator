@@ -42,17 +42,18 @@ public class OrderForm {
 	public Orders convert(ProductsRepository productsRepository, UserRepository userRepository,
 			OrdersRepository ordersRepository) {
 
-		Optional<User> userOpt = userRepository.findByUser(this.user);
+		Optional<User> userOpt = userRepository.findByUser(this.user.toLowerCase());
 		if (userOpt.isPresent()) {
 			Orders order = new Orders(); 
-			order = ordersRepository.findByidOrder(userOpt.get().getId());
+			order = ordersRepository.findByUser_User(userOpt.get().getUser());
 			if (order != null && order.getIdOrder() != null) {
 				FillOrders(productsRepository, order);
+				order.setUser(userOpt.get());
 				return order;
 			} else {
 				order = new Orders();
 				order.setProductsList(new HashSet<>());
-				order.setIdOrder(userOpt.get().getId());
+				order.setUser(userOpt.get());
 				FillOrders(productsRepository, order);
 			}
 			return order;

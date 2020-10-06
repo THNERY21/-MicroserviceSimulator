@@ -14,6 +14,10 @@ public class TypeProductForm {
 		this.name = type.getId().getName();
 		this.typeDescription = type.getTypeDescription();
 	}
+	
+	public TypeProductForm() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public String getName() {
 		return name;
@@ -25,11 +29,11 @@ public class TypeProductForm {
 
 	public TypeProduct convert(TypeProductRepository typeProductRepository) {
 		TypeId id = new TypeId();
-		id.setName(name);
-		TypeProduct type = typeProductRepository.findByid_NameType(name);
+		id.setName(name.toLowerCase());
+		TypeProduct type = typeProductRepository.findByid_NameType(id.getName());
 		if(type==null) {
 			return new TypeProduct(id,typeDescription);
-		}
+		} 
 		return null;
 	}
 

@@ -6,6 +6,8 @@ import br.com.brasilprev.loja.model.User;
 
 public class UserDto {
 
+	private static final String ROLE_ADMINISTRATOR = "ROLE_ADMINISTRATOR";
+
 	private String name;
 
 	private String cpf;
@@ -13,13 +15,20 @@ public class UserDto {
 	private String email;
 
 	private String user;
+	
+	
+	private boolean isAdmin;
 
 	public UserDto(User user) {
-		super();
 		this.name = user.getName();
 		this.cpf = user.getCpf();
 		this.email = user.getEmail();
 		this.user = user.getUser();
+		user.getProfiles().forEach(pr -> {
+			if (pr.getName().equals(ROLE_ADMINISTRATOR)) {
+				setAdmin(true);
+			}
+		});
 	}
 
 	public String getName() {
@@ -45,5 +54,13 @@ public class UserDto {
 
 	public static Page<UserDto> convertUserList(Page<User> users) {
 		return users.map(UserDto::new);
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 }

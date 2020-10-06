@@ -49,7 +49,7 @@ public class UserController {
 	public Page<UserDto> searchUsers(@RequestParam(required = false) @Valid String name,
 			@PageableDefault(sort = "id", direction = Direction.ASC, page =0, size=10) Pageable pagination) {
 		if (name != null) {
-			Page<User> users = userRepository.findByUsers(name, pagination);
+			Page<User> users = userRepository.findByUsers(name.toLowerCase(), pagination);
 			return UserDto.convertUserList(users);
 		} else {
 			Page<User> users = userRepository.findAll(pagination);

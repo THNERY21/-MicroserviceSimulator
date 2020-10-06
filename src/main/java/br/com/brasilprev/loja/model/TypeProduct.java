@@ -2,6 +2,7 @@ package br.com.brasilprev.loja.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,11 +18,12 @@ public class TypeProduct {
 
 	private String typeDescription;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "type")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "type", cascade = CascadeType.ALL)
 	private List<Products> products;
 	
-	
-	
+	public TypeProduct() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public TypeProduct(TypeId id, String typeDescription) {
 		super();

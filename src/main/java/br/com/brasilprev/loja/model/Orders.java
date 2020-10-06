@@ -1,21 +1,23 @@
 package br.com.brasilprev.loja.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Orders {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idOrder;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -25,6 +27,8 @@ public class Orders {
 	private Set<Products> productsList;  
 
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User user;
  
 	private LocalDateTime purchaseDate = LocalDateTime.now();
 
@@ -103,6 +107,16 @@ public class Orders {
 		} else if (!purchaseDate.equals(other.purchaseDate))
 			return false;
 		return true;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	

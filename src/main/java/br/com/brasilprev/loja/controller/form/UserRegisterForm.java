@@ -90,7 +90,7 @@ public class UserRegisterForm {
 		}else {
 			profiles.add(profileRepository.getOne(ROLE_USER));
 		}
-		return new User(name, cpf, email, user,password,profiles); 
+		return new User(name.toLowerCase(), cpf, email, user,password,profiles); 
 	}
 
 	

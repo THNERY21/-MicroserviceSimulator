@@ -50,8 +50,13 @@ public class OrdersController {
 	@GetMapping
 	public Page<OrderDto> listOrders(@RequestParam(required = false) @Valid String name,
 			@PageableDefault(sort = "id", direction = Direction.ASC, page =0, size=10) Pageable pagination) {
-			Page<Orders> orders = ordersRepository.findAll(pagination);
-			return OrderDto.convertOrdersList(orders);
+			if (name != null) {
+				Page<Orders> orders = ordersRepository.findByUser(name, pagination);
+				return OrderDto.convertOrdersList(orders);
+			} else {
+				Page<Orders> orders = ordersRepository.findAll(pagination);
+				return OrderDto.convertOrdersList(orders);
+			}
 	}
  
 	@PostMapping

@@ -27,7 +27,7 @@ public class Products {
 	@JoinColumn(name = "type", referencedColumnName = "nameType")
 	private TypeProduct type;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "produc_order", joinColumns = {
 			@JoinColumn(name = "id_product", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "idOrder", referencedColumnName = "idOrder") })

@@ -14,12 +14,15 @@ public class OrderDto {
 	private List<ProductDto> productsList;
 	
 	private LocalDateTime purchaseDate;
+	
+	private String user;
 
 	public OrderDto(Orders order) {
 		super();
 		this.id = order.getIdOrder();
 		this.productsList = ProductDto.convertProductList(order.getProductsList());
 		this.purchaseDate = order.getPurchaseDate();
+		this.setUser(order.getUser().getUser());
 	}
 
 	public Long getId() {
@@ -37,6 +40,14 @@ public class OrderDto {
 	
 	public static Page<OrderDto> convertOrdersList(Page<Orders> orders) {
 		return orders.map(OrderDto::new);
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 	
