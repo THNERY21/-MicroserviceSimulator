@@ -29,7 +29,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.brasilprev.loja.controller.form.UpdateUserForm;
 import br.com.brasilprev.loja.controller.form.UserRegisterForm;
 import br.com.brasilprev.loja.dto.UserDto;
+import br.com.brasilprev.loja.model.Orders;
 import br.com.brasilprev.loja.model.User;
+import br.com.brasilprev.loja.repository.OrdersRepository;
 import br.com.brasilprev.loja.repository.ProfileRepository;
 import br.com.brasilprev.loja.repository.UserRepository;
 
@@ -42,6 +44,11 @@ public class UserController {
 	
 	@Autowired
 	private  ProfileRepository profileRepository;
+	
+	@Autowired
+	private OrdersRepository ordersRepository;
+	
+
 
 
 	@GetMapping
@@ -103,6 +110,10 @@ public class UserController {
 	public ResponseEntity<?> deleteUser(@PathVariable String user) {
 		Optional<User> userOpt = userRepository.findByUser(user);
 		if (userOpt.isPresent()) {
+			Orders order = ordersRepository.findByUser_User(user);
+			if(order!=null) {
+				ordersRepository.delete(order);
+			}
 			userRepository.deleteById(userOpt.get().getId());
 			return ResponseEntity.ok().build();
 		}

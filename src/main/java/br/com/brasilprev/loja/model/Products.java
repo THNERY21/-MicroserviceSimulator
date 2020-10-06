@@ -27,7 +27,7 @@ public class Products {
 	@JoinColumn(name = "type", referencedColumnName = "nameType")
 	private TypeProduct type;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "produc_order", joinColumns = {
 			@JoinColumn(name = "id_product", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "idOrder", referencedColumnName = "idOrder") })
@@ -100,7 +100,6 @@ public class Products {
 		this.size = size;
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -108,11 +107,11 @@ public class Products {
 		result = prime * result + ((Weight == null) ? 0 : Weight.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
 		result = prime * result + ((size == null) ? 0 : size.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -138,6 +137,11 @@ public class Products {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (orders == null) {
+			if (other.orders != null)
+				return false;
+		} else if (!orders.equals(other.orders))
+			return false;
 		if (size == null) {
 			if (other.size != null)
 				return false;
@@ -150,11 +154,8 @@ public class Products {
 			return false;
 		return true;
 	}
-	
-	
-	
 
 
-
+	
 	
 }

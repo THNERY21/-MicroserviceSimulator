@@ -1,35 +1,25 @@
 package br.com.brasilprev.loja.controller;
 
 import java.net.URI;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.brasilprev.loja.controller.form.DeleteProductForm;
 import br.com.brasilprev.loja.controller.form.OrderForm;
-import br.com.brasilprev.loja.controller.form.UpdateProductForm;
 import br.com.brasilprev.loja.dto.OrderDto;
-import br.com.brasilprev.loja.dto.ProductDto;
 import br.com.brasilprev.loja.model.Orders;
-import br.com.brasilprev.loja.model.Products;
 import br.com.brasilprev.loja.repository.OrdersRepository;
 import br.com.brasilprev.loja.repository.ProductsRepository;
 import br.com.brasilprev.loja.repository.UserRepository;
@@ -47,17 +37,6 @@ public class OrdersController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@GetMapping
-	public Page<OrderDto> listOrders(@RequestParam(required = false) @Valid String name,
-			@PageableDefault(sort = "id", direction = Direction.ASC, page =0, size=10) Pageable pagination) {
-			if (name != null) {
-				Page<Orders> orders = ordersRepository.findByUser(name, pagination);
-				return OrderDto.convertOrdersList(orders);
-			} else {
-				Page<Orders> orders = ordersRepository.findAll(pagination);
-				return OrderDto.convertOrdersList(orders);
-			}
-	}
  
 	@PostMapping
 	@Transactional
@@ -73,24 +52,24 @@ public class OrdersController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<OrderDto> orderDetail(@PathVariable Long id) {
+	@GetMapping("/{username}")
+	public ResponseEntity<OrderDto> orderDetail(@PathVariable String username) {
 
-		Optional<Orders> order = ordersRepository.findById(id);
-		if (order.isPresent()) {
-			return ResponseEntity.ok(new OrderDto(order.get()));
+		Orders order = ordersRepository.findByUser_User(username);
+		if (order!=null) {
+			return ResponseEntity.ok(new OrderDto(order));
 		}
 		return ResponseEntity.notFound().build();
 
 	}
 
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{username}")
 	@Transactional
-	public ResponseEntity<?> deleteOrderProduct(@PathVariable Long id, @Valid DeleteProductForm form) {
-		Optional<Orders> optional = ordersRepository.findById(id);
-		if (optional.isPresent()) {
-			form.deleteOrderProdcut(optional.get(), ordersRepository, productsRepository);
+	public ResponseEntity<?> deleteOrder(@PathVariable String username, @RequestBody @Valid DeleteProductForm form) {
+		Orders order = ordersRepository.findByUser_User(username);
+		if (order!=null) {
+			form.deleteOrderProdcut(order, ordersRepository, productsRepository);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();

@@ -3,17 +3,16 @@ package br.com.brasilprev.loja.controller;
 import java.net.URI;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +42,6 @@ public class ProductController {
 	private TypeProductRepository typeProductRepository;
 
 	@GetMapping
-	@Cacheable(value = "productsList")
 	public Page<ProductDto> searchproducts(@RequestParam(required = false) @Valid String name,
 			@PageableDefault(sort = "id", direction = Direction.ASC, page =0, size=10) Pageable pagination) {
 
@@ -58,7 +56,6 @@ public class ProductController {
 
 	@PostMapping
 	@Transactional
-	@CacheEvict(value = "productsList", allEntries = true)
 	public ResponseEntity<ProductDto> registerProduct(@RequestBody @Valid ProductForm productForm,
 			UriComponentsBuilder uriBuilder) {
 		Products products = productForm.convert(typeProductRepository);
@@ -80,7 +77,6 @@ public class ProductController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	@CacheEvict(value = "productsList", allEntries = true)
 	public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody @Valid UpdateProductForm form) {
 		Optional<Products> optional = productsRepository.findById(id);
 		if (optional.isPresent()) {
@@ -92,11 +88,10 @@ public class ProductController {
 
 	@DeleteMapping("/{id}")
 	@Transactional
-	@CacheEvict(value = "productsList", allEntries = true)
 	public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
 		Optional<Products> optional = productsRepository.findById(id);
 		if (optional.isPresent()) {
-			productsRepository.deleteById(id);
+			productsRepository.delete(id);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();

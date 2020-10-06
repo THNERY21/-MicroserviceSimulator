@@ -70,14 +70,22 @@ public class Orders {
 		this.productsList = productsList;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((idOrder == null) ? 0 : idOrder.hashCode());
-		result = prime * result + ((productsList == null) ? 0 : productsList.hashCode());
-		result = prime * result + ((purchaseDate == null) ? 0 : purchaseDate.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 
@@ -96,29 +104,14 @@ public class Orders {
 				return false;
 		} else if (!idOrder.equals(other.idOrder))
 			return false;
-		if (productsList == null) {
-			if (other.productsList != null)
+		if (user == null) {
+			if (other.user != null)
 				return false;
-		} else if (!productsList.equals(other.productsList))
-			return false;
-		if (purchaseDate == null) {
-			if (other.purchaseDate != null)
-				return false;
-		} else if (!purchaseDate.equals(other.purchaseDate))
+		} else if (!user.equals(other.user))
 			return false;
 		return true;
 	}
-
-
-	public User getUser() {
-		return user;
-	}
-
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 	
 	
-
+   
 }

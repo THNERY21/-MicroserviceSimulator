@@ -1,19 +1,20 @@
 package br.com.brasilprev.loja.controller.form;
 
-import java.math.BigDecimal;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import br.com.brasilprev.loja.model.Orders;
 import br.com.brasilprev.loja.model.Products;
-import br.com.brasilprev.loja.model.TypeProduct;
 import br.com.brasilprev.loja.repository.OrdersRepository;
 import br.com.brasilprev.loja.repository.ProductsRepository;
-import br.com.brasilprev.loja.repository.TypeProductRepository;
 
 public class DeleteProductForm {
 
+	
+	@NotNull
+	
 	private Long idProdcut;
 
 	
