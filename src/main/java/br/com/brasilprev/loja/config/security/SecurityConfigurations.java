@@ -41,15 +41,15 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(authenticationService).passwordEncoder(new BCryptPasswordEncoder());
 	}
-	
+	 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/products").hasRole("USER")
 		.antMatchers(HttpMethod.GET, "/products/*").hasRole("USER")
-		.antMatchers(HttpMethod.DELETE, "/products").hasRole("ADMINISTRATOR")
-		.antMatchers(HttpMethod.POST, "/products").hasRole("ADMINISTRATOR")
-		.antMatchers(HttpMethod.PUT, "/products").hasRole("ADMINISTRATOR")
+		.antMatchers(HttpMethod.DELETE, "/products").hasRole("USER")
+		.antMatchers(HttpMethod.POST, "/products").hasRole("USER")
+		.antMatchers(HttpMethod.PUT, "/products").hasRole("USER")
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
 		.antMatchers(HttpMethod.GET, "/actuator/**").hasRole("ADMINISTRATOR")
 		.antMatchers(HttpMethod.GET, "/orders").hasRole("USER")
@@ -65,6 +65,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.POST, "/typeProdcuts").hasRole("USER")
 		.antMatchers(HttpMethod.PUT, "/typeProdcuts/*").hasRole("USER")
 		.antMatchers(HttpMethod.DELETE, "/typeProdcuts/*").hasRole("USER")
+		.antMatchers("/").permitAll()
 		.anyRequest().authenticated()
 		.and().csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

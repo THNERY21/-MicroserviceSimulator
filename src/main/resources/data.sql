@@ -15,7 +15,11 @@ INSERT INTO PRODUCTS
 
 INSERT INTO USER 
 ( NAME , CPF , EMAIL , PASSWORD , USER )
-VALUES  ('THIAGO','03630449573','thnery23@hotmail.com','$2a$10$QkeW1SKbx3Kbwhq/mv56K.vUgWQeBa59m6aPrF2I5p4cerGHh.TUm','thnery23' );
+VALUES  ('THIAGO','73183823306','thnery23@hotmail.com','$2a$10$QkeW1SKbx3Kbwhq/mv56K.vUgWQeBa59m6aPrF2I5p4cerGHh.TUm','thnery23' );
+
+INSERT INTO USER 
+( NAME , CPF , EMAIL , PASSWORD , USER )
+VALUES  ('Admin','73183823306','admin@admin.com','$2a$10$QkeW1SKbx3Kbwhq/mv56K.vUgWQeBa59m6aPrF2I5p4cerGHh.TUm','administrador' );
 
  
 
