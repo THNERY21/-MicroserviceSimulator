@@ -62,7 +62,8 @@ A aplicação possui uma documentação dinâmica do Swagger. Para acessa-la bas
 
 ## **Referências** 
 
-[JJWT](https://github.com/h2database/h2database)
+[JWT](https://github.com/h2database/h2database)
+JWT - https://jwt.io/
 
 [H2DataBases](https://github.com/h2database/h2database)
 
