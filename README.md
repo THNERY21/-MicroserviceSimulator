@@ -1,4 +1,4 @@
-## Objetivo do Projeto Loja BrasilPrev
+## Objetivo do Projeto Loja Virtual
 ***
 Disponibilizar um WEB Service com API's REST capaz de simular uma loja virtual com cadastro de pedidos, usuários e produtos. 
 
