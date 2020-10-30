@@ -1,6 +1,7 @@
 ## Objetivo do Projeto Loja Virtual
 ***
-Disponibilizar um WEB Service com API's REST capaz de simular uma loja virtual com cadastro de pedidos, usuários e produtos. 
+A ideia é demonstrar de uma forma resumida como codifico em Java backend. Então resolvi disponibilizar um WEB Service com API's REST capaz de simular uma loja virtual com cadastro de pedidos, usuários e produtos.
+
 
 ## Tecnologias Utilizadas
 ***
@@ -14,6 +15,7 @@ Disponibilizar um WEB Service com API's REST capaz de simular uma loja virtual c
 * JUnit + SpringTest
 
 ## *Deploy*
+
 A aplicação está disponível para ser testada no Heroku através do link. 
 
 [Link Microserviço simulador de loja](https://microservicesimulator.herokuapp.com/)
