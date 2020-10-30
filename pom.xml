@@ -8,7 +8,7 @@
 		<version>2.2.11.BUILD-SNAPSHOT</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.brasilprev</groupId>
+	<groupId>br.com.loja</groupId>
 	<artifactId>loja</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>loja</name>
