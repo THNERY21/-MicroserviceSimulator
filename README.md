@@ -16,7 +16,7 @@ Disponibilizar um WEB Service com API's REST capaz de simular uma loja virtual c
 ## *Deploy*
 A aplicação está disponível para ser testada no Heroku através do link. 
 
-[Link LojaBrasilPrev](https://brasilprevloja.herokuapp.com/)
+[Link LojaBrasilPrev](https://microservicesimulator.herokuapp.com/)
 
 ## *Segurança*
 
@@ -32,7 +32,7 @@ As APIs disponíveis para consumo necessitam de um token para serem executadas. 
 
 Para executar uma API é necessário capturar o token de acesso, para fazer isso siga os passos a seguir. 
 
-1. Execute a API https://brasilprevloja.herokuapp.com/auth utilizando o usuário cadastrado default administrador\admin123, observe baixo o json utilizado no body da requisição. 
+1. Execute a API https://microservicesimulator.herokuapp.com/auth utilizando o usuário cadastrado default administrador\admin123, observe baixo o json utilizado no body da requisição. 
 
 ```
 {
@@ -58,7 +58,7 @@ Para executar uma API é necessário capturar o token de acesso, para fazer isso
 
 A aplicação possui uma documentação dinâmica do Swagger. Para acessa-la basta clicar no link abaixo:
 
-[Link Heroku](https://brasilprevloja.herokuapp.com/swagger-ui.html)
+[Link Heroku](https://microservicesimulator.herokuapp.com/swagger-ui.html)
 
 ## **Referências** 
 
