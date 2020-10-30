@@ -13,6 +13,8 @@ A ideia é demonstrar de uma forma resumida como codifico em Java backend. Entã
 * Docker 
 * Swagger
 * JUnit + SpringTest
+* Hibernate
+
 
 ## *Deploy*
 
