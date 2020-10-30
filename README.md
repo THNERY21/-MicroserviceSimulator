@@ -16,7 +16,7 @@ Disponibilizar um WEB Service com API's REST capaz de simular uma loja virtual c
 ## *Deploy*
 A aplicação está disponível para ser testada no Heroku através do link. 
 
-[Link LojaBrasilPrev](https://microservicesimulator.herokuapp.com/)
+[Link Microserviço simulador de loja](https://microservicesimulator.herokuapp.com/)
 
 ## *Segurança*
 
