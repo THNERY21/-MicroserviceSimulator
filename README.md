@@ -62,7 +62,7 @@ Para executar uma API é necessário capturar o token de acesso, para fazer isso
 
 A aplicação possui uma documentação dinâmica do Swagger. Para acessa-la basta clicar no link abaixo:
 
-[Link Heroku](https://microservicesimulator.herokuapp.com/swagger-ui.html)
+[Link Heroku](https://storesimulator.herokuapp.com/swagger-ui.html)
 
 ## **Referências** 
 
