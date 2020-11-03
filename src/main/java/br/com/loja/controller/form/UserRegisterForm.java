@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import br.com.loja.model.ProfileUser;
 import br.com.loja.model.User;
 import br.com.loja.repository.ProfileRepository;
+import br.com.loja.service.interfaces.ProfileInterface;
 
 public class UserRegisterForm {
 		
@@ -83,12 +84,12 @@ public class UserRegisterForm {
 		this.isAdmin = isAdmin;
 	}
 
-	public User convert(ProfileRepository profileRepository) {
+	public User convert( ProfileInterface profileService) {
 		List<ProfileUser> profiles = new ArrayList<>();
 		if(isAdmin) {
-			profiles = profileRepository.findAll();
+			profiles = profileService.findAll();
 		}else {
-			profiles.add(profileRepository.getOne(ROLE_USER));
+			profiles.add(profileService.getOne(ROLE_USER));
 		}
 		return new User(name.toLowerCase(), cpf, email, user,password,profiles); 
 	}

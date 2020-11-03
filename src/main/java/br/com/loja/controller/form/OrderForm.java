@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 import br.com.loja.model.Orders;
 import br.com.loja.model.Products;
 import br.com.loja.model.User;
-import br.com.loja.repository.OrdersRepository;
-import br.com.loja.repository.ProductsRepository;
-import br.com.loja.repository.UserRepository;
+import br.com.loja.service.interfaces.OrdersInterface;
+import br.com.loja.service.interfaces.ProductsInterface;
+import br.com.loja.service.interfaces.UserInterface;
 
 public class OrderForm {
 
@@ -39,22 +39,22 @@ public class OrderForm {
 		this.idProductsList = idProductsList;
 	}
 
-	public Orders convert(ProductsRepository productsRepository, UserRepository userRepository,
-			OrdersRepository ordersRepository) {
+	public Orders convert(ProductsInterface productsServie, UserInterface userSerice,
+			OrdersInterface ordersInterface) {
 
-		Optional<User> userOpt = userRepository.findByUser(this.user.toLowerCase());
+		Optional<User> userOpt = userSerice.findByUser(this.user.toLowerCase());
 		if (userOpt.isPresent()) {
 			Orders order = new Orders(); 
-			order = ordersRepository.findByUser_User(userOpt.get().getUser());
+			order = ordersInterface.findByUser_User(userOpt.get().getUser());
 			if (order != null && order.getIdOrder() != null) {
-				FillOrders(productsRepository, order);
+				FillOrders(productsServie, order);
 				order.setUser(userOpt.get());
 				return order;
 			} else {
 				order = new Orders();
 				order.setProductsList(new HashSet<>());
 				order.setUser(userOpt.get());
-				FillOrders(productsRepository, order);
+				FillOrders(productsServie, order);
 			}
 			return order;
 		}
@@ -62,9 +62,9 @@ public class OrderForm {
 		return null;
 	}
 
-	private void FillOrders(ProductsRepository productsRepository, Orders order) {
+	private void FillOrders(ProductsInterface productsServie, Orders order) {
 		this.idProductsList.forEach(id -> {
-			Optional<Products> product = productsRepository.findById(id);
+			Optional<Products> product = productsServie.findById(id);
 			if(product.isPresent()) {
 				order.getProductsList().add(product.get());
 			}

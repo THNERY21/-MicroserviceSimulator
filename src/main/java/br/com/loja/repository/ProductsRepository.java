@@ -1,7 +1,6 @@
 package br.com.loja.repository;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 

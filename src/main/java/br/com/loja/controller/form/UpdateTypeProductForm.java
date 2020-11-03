@@ -1,8 +1,8 @@
 package br.com.loja.controller.form;
 
-import br.com.loja.model.Products;
 import br.com.loja.model.TypeProduct;
 import br.com.loja.repository.TypeProductRepository;
+import br.com.loja.service.interfaces.TypeProductInterface;
 
 public class UpdateTypeProductForm {
 
@@ -17,7 +17,7 @@ public class UpdateTypeProductForm {
 
 
 
-	public TypeProduct update(TypeProduct typeProduct, TypeProductRepository typeProductRepository) {
+	public TypeProduct update(TypeProduct typeProduct) {
 		typeProduct.setTypeDescription(typeDescription);
 		return typeProduct;
 	}

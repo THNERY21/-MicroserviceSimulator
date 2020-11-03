@@ -8,27 +8,24 @@ import javax.validation.constraints.NotNull;
 import br.com.loja.model.Products;
 import br.com.loja.model.TypeProduct;
 import br.com.loja.repository.ProductsRepository;
-import br.com.loja.repository.TypeProductRepository;
+import br.com.loja.service.interfaces.TypeProductInterface;
 
 public class ProductForm {
-	 
+
 	@NotNull
 	@NotEmpty
-	private String name; 
-	
+	private String name;
+
 	@NotNull
 	@NotEmpty
 	private String nameType;
-	
+
 	@NotNull
 	private BigDecimal weight;
 
 	@NotNull
 	@NotEmpty
 	private String size;
-	
-	
-	
 
 	public ProductForm(@NotNull @NotEmpty String name, @NotNull @NotEmpty String nameType, @NotNull BigDecimal weight,
 			@NotNull @NotEmpty String size) {
@@ -62,15 +59,15 @@ public class ProductForm {
 		this.size = size;
 	}
 
-	public Products convert(TypeProductRepository typeProductRepository) {
-		TypeProduct type = typeProductRepository.findByid_NameType(this.nameType);
-		return new Products(name,type,weight,size);
+	public Products convert(TypeProductInterface typeProductSerice) {
+		TypeProduct type = typeProductSerice.findByid_NameType(this.nameType);
+		return new Products(name, type, weight, size);
 	}
 
-	public Products update(Long id, ProductsRepository productsRepository,TypeProductRepository typeProductRepository) {
+	public Products update(Long id, ProductsRepository productsRepository, TypeProductInterface typeProductSerice) {
 		Products products = productsRepository.getOne(id);
-		TypeProduct type = typeProductRepository.findByid_NameType(this.nameType);
-		
+		TypeProduct type = typeProductSerice.findByid_NameType(this.nameType);
+
 		products.setName(this.name);
 		products.setSize(this.size);
 		products.setType(type);
@@ -78,8 +75,4 @@ public class ProductForm {
 		return products;
 	}
 
-
-	
-	
-	
 }

@@ -8,12 +8,12 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
 @ApiIgnore
-public class HelloController {
+public class WelcomeController {
 	
 	@RequestMapping("/")
 	@ResponseBody
 	public String hello() {
-		return "Sejam bem-vindos ao microserviços da Loja";
+		return "Sejam bem-vindos";
 	}
 
 }

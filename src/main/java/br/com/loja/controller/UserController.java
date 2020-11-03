@@ -31,22 +31,22 @@ import br.com.loja.controller.form.UserRegisterForm;
 import br.com.loja.dto.UserDto;
 import br.com.loja.model.Orders;
 import br.com.loja.model.User;
-import br.com.loja.repository.OrdersRepository;
-import br.com.loja.repository.ProfileRepository;
-import br.com.loja.repository.UserRepository;
+import br.com.loja.service.interfaces.OrdersInterface;
+import br.com.loja.service.interfaces.ProfileInterface;
+import br.com.loja.service.interfaces.UserInterface;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserInterface userSerice;
 	
 	@Autowired
-	private  ProfileRepository profileRepository;
+	private ProfileInterface profileService;
 	
 	@Autowired
-	private OrdersRepository ordersRepository;
+	private OrdersInterface ordersService;
 	
 
 
@@ -56,10 +56,10 @@ public class UserController {
 	public Page<UserDto> searchUsers(@RequestParam(required = false) @Valid String name,
 			@PageableDefault(sort = "id", direction = Direction.ASC, page =0, size=10) Pageable pagination) {
 		if (name != null) {
-			Page<User> users = userRepository.findByUsers(name.toLowerCase(), pagination);
+			Page<User> users = userSerice.findByUsers(name.toLowerCase(), pagination);
 			return UserDto.convertUserList(users);
 		} else {
-			Page<User> users = userRepository.findAll(pagination);
+			Page<User> users = userSerice.findAll(pagination);
 			return UserDto.convertUserList(users);
 		}
 		
@@ -70,12 +70,12 @@ public class UserController {
 	@CacheEvict(value = "userList", allEntries = true)
 	public ResponseEntity<UserDto> registerUser(@RequestBody @Valid UserRegisterForm userRegisterForm,
 			UriComponentsBuilder uriBuilder) {
-		User user = userRegisterForm.convert(profileRepository);
-		Optional<User> userOpt =  userRepository.findByUser(user.getUser());
+		User user = userRegisterForm.convert(profileService);
+		Optional<User> userOpt =  userSerice.findByUser(user.getUser());
 		if(userOpt.isPresent()) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 		}
-		userRepository.save(user);
+		userSerice.save(user);
 		URI uri = uriBuilder.path("/prodcuts/{id}").buildAndExpand(user.getId()).toUri();
 		return ResponseEntity.created(uri).body(new UserDto(user));
 	}
@@ -84,7 +84,7 @@ public class UserController {
 	@GetMapping("/{user}")
 	public ResponseEntity<UserDto> userdetail(@PathVariable String user) {
 
-		Optional<User> userOpt = userRepository.findByUser(user);
+		Optional<User> userOpt = userSerice.findByUser(user);
 		if (userOpt.isPresent()) {
 			return ResponseEntity.ok(new UserDto(userOpt.get()));
 		}
@@ -96,9 +96,9 @@ public class UserController {
 	@Transactional
 	@CacheEvict(value = "userList", allEntries = true)
 	public ResponseEntity<UserDto> updateUser(@PathVariable String user, @RequestBody @Valid UpdateUserForm form) {
-		Optional<User> userOpt = userRepository.findByUser(user);
+		Optional<User> userOpt = userSerice.findByUser(user);
 		if (userOpt.isPresent()) {
-			User userModel = form.update(userOpt.get(),profileRepository);
+			User userModel = form.update(userOpt.get(),profileService);
 			return ResponseEntity.ok(new UserDto(userModel));
 		}
 		return ResponseEntity.notFound().build();
@@ -108,13 +108,13 @@ public class UserController {
 	@Transactional
 	@CacheEvict(value = "userList", allEntries = true)
 	public ResponseEntity<?> deleteUser(@PathVariable String user) {
-		Optional<User> userOpt = userRepository.findByUser(user);
+		Optional<User> userOpt = userSerice.findByUser(user);
 		if (userOpt.isPresent()) {
-			Orders order = ordersRepository.findByUser_User(user);
+			Orders order =  ordersService.findByUser_User(user);
 			if(order!=null) {
-				ordersRepository.delete(order);
+				ordersService.delete(order);
 			}
-			userRepository.deleteById(userOpt.get().getId());
+			userSerice.deleteById(userOpt.get().getId());
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();

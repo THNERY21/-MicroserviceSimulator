@@ -6,27 +6,18 @@ import org.apache.commons.lang3.StringUtils;
 
 import br.com.loja.model.Products;
 import br.com.loja.model.TypeProduct;
-import br.com.loja.repository.ProductsRepository;
-import br.com.loja.repository.TypeProductRepository;
+import br.com.loja.service.interfaces.ProductsInterface;
+import br.com.loja.service.interfaces.TypeProductInterface;
 
 public class UpdateProductForm {
-	 
 
-
-	private String name; 
-	
+	private String name;
 
 	private String nameType;
-	
 
 	private BigDecimal weight;
 
-
 	private String size;
-	
-	
-
-
 
 	public String getName() {
 		return name;
@@ -52,36 +43,32 @@ public class UpdateProductForm {
 		this.size = size;
 	}
 
-	public Products convert(TypeProductRepository typeProductRepository) {
-		TypeProduct type = typeProductRepository.findByid_NameType(this.nameType);
-		return new Products(name,type,weight,size);
+	public Products convert(TypeProductInterface typeProductSerice) {
+		TypeProduct type = typeProductSerice.findByid_NameType(this.nameType);
+		return new Products(name, type, weight, size);
 	}
 
-	public Products update(Long id, ProductsRepository productsRepository,TypeProductRepository typeProductRepository) {
-		Products products = productsRepository.getOne(id);
-		TypeProduct type = typeProductRepository.findByid_NameType(this.nameType);
-		
-		if(StringUtils.isNotEmpty(this.name)) {
+	public Products update(Long id, ProductsInterface productsServie, TypeProductInterface typeProductSerice) {
+		Products products = productsServie.getOne(id);
+		TypeProduct type = typeProductSerice.findByid_NameType(this.nameType);
+
+		if (StringUtils.isNotEmpty(this.name)) {
 			products.setName(this.name);
 		}
-		
-		if(StringUtils.isNotEmpty(this.size)) {
+
+		if (StringUtils.isNotEmpty(this.size)) {
 			products.setSize(this.size);
 		}
 
-		if(type!=null) {
+		if (type != null) {
 			products.setType(type);
 		}
-		
-		if(this.weight != null) {
+
+		if (this.weight != null) {
 			products.setWeight(this.weight);
 		}
-		
+
 		return products;
 	}
 
-
-	
-	
-	
 }

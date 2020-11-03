@@ -20,31 +20,32 @@ import br.com.loja.controller.form.DeleteProductForm;
 import br.com.loja.controller.form.OrderForm;
 import br.com.loja.dto.OrderDto;
 import br.com.loja.model.Orders;
-import br.com.loja.repository.OrdersRepository;
-import br.com.loja.repository.ProductsRepository;
-import br.com.loja.repository.UserRepository;
+import br.com.loja.service.interfaces.OrdersInterface;
+import br.com.loja.service.interfaces.ProductsInterface;
+import br.com.loja.service.interfaces.UserInterface;
 
 @RestController
 @RequestMapping("/orders")
 public class OrdersController {
 
-	@Autowired
-	private OrdersRepository ordersRepository;
-
-	@Autowired
-	private ProductsRepository productsRepository;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private OrdersInterface ordersService;
+	
+	@Autowired
+	private ProductsInterface productsServie;
+	
+	@Autowired
+	private UserInterface userSerice;
 
  
 	@PostMapping
 	@Transactional
 	public ResponseEntity<OrderDto> registerOrder(@RequestBody @Valid OrderForm orderForm,
 			UriComponentsBuilder uriBuilder) {
-		Orders orders = orderForm.convert(productsRepository, userRepository, ordersRepository);
+		Orders orders = orderForm.convert(productsServie, userSerice, ordersService);
 		if (orders != null) {
-			ordersRepository.save(orders);
+			ordersService.save(orders);
 			URI uri = uriBuilder.path("/orders/{id}").buildAndExpand(orders.getIdOrder()).toUri();
 			return ResponseEntity.created(uri).body(new OrderDto(orders));
 
@@ -55,7 +56,7 @@ public class OrdersController {
 	@GetMapping("/{username}")
 	public ResponseEntity<OrderDto> orderDetail(@PathVariable String username) {
 
-		Orders order = ordersRepository.findByUser_User(username);
+		Orders order = ordersService.findByUser_User(username);
 		if (order!=null) {
 			return ResponseEntity.ok(new OrderDto(order));
 		}
@@ -67,9 +68,9 @@ public class OrdersController {
 	@DeleteMapping("/{username}")
 	@Transactional
 	public ResponseEntity<?> deleteOrder(@PathVariable String username, @RequestBody @Valid DeleteProductForm form) {
-		Orders order = ordersRepository.findByUser_User(username);
+		Orders order = ordersService.findByUser_User(username);
 		if (order!=null) {
-			form.deleteOrderProdcut(order, ordersRepository, productsRepository);
+			form.deleteOrderProdcut(order, ordersService, productsServie);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();

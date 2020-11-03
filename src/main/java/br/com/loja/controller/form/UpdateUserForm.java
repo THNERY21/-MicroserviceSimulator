@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import br.com.loja.model.ProfileUser;
 import br.com.loja.model.User;
 import br.com.loja.repository.ProfileRepository;
+import br.com.loja.service.interfaces.ProfileInterface;
 
 public class UpdateUserForm {
 		
@@ -63,7 +64,7 @@ public class UpdateUserForm {
 		this.password = new BCryptPasswordEncoder().encode(password);
 	}
 
-	public User update(User user,ProfileRepository profileRepository) {
+	public User update(User user,ProfileInterface profileService) {
 		if (StringUtils.isNotEmpty(cpf)) {
 			user.setCpf(cpf);
 		}
@@ -78,9 +79,9 @@ public class UpdateUserForm {
 		}
 		List<ProfileUser> profiles = new ArrayList<>();
 		if(isAdmin) {
-			profiles = profileRepository.findAll();
+			profiles = profileService.findAll();
 		}else {
-			profiles.add(profileRepository.getOne(ROLE_USER));
+			profiles.add(profileService.getOne(ROLE_USER));
 		}
 		user.setProfiles(profiles);
 		return user;

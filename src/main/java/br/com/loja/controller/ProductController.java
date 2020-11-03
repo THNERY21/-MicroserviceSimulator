@@ -3,7 +3,6 @@ package br.com.loja.controller;
 import java.net.URI;
 import java.util.Optional;
 
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,28 +27,28 @@ import br.com.loja.controller.form.ProductForm;
 import br.com.loja.controller.form.UpdateProductForm;
 import br.com.loja.dto.ProductDto;
 import br.com.loja.model.Products;
-import br.com.loja.repository.ProductsRepository;
-import br.com.loja.repository.TypeProductRepository;
+import br.com.loja.service.interfaces.ProductsInterface;
+import br.com.loja.service.interfaces.TypeProductInterface;
 
 @RestController
 @RequestMapping("/prodcuts")
 public class ProductController {
 
 	@Autowired
-	private ProductsRepository productsRepository;
+	private ProductsInterface productsServie;
 
 	@Autowired
-	private TypeProductRepository typeProductRepository;
+	private TypeProductInterface typeProductSerice;
 
 	@GetMapping
 	public Page<ProductDto> searchproducts(@RequestParam(required = false) @Valid String name,
 			@PageableDefault(sort = "id", direction = Direction.ASC, page =0, size=10) Pageable pagination) {
 
 		if (name != null) {
-			Page<Products> product = productsRepository.findByName(name, pagination);
+			Page<Products> product = productsServie.findByName(name, pagination);
 			return ProductDto.convertProductList(product);
 		} else {
-			Page<Products> product = productsRepository.findAll(pagination);
+			Page<Products> product = productsServie.findAll(pagination);
 			return ProductDto.convertProductList(product);
 		}
 	}
@@ -58,8 +57,8 @@ public class ProductController {
 	@Transactional
 	public ResponseEntity<ProductDto> registerProduct(@RequestBody @Valid ProductForm productForm,
 			UriComponentsBuilder uriBuilder) {
-		Products products = productForm.convert(typeProductRepository);
-		productsRepository.save(products);
+		Products products = productForm.convert(typeProductSerice);
+		productsServie.save(products);
 		URI uri = uriBuilder.path("/prodcuts/{id}").buildAndExpand(products.getId()).toUri();
 		return ResponseEntity.created(uri).body(new ProductDto(products));
 	}
@@ -67,7 +66,7 @@ public class ProductController {
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductDto> productdetail(@PathVariable Long id) {
 
-		Optional<Products> product = productsRepository.findById(id);
+		Optional<Products> product = productsServie.findById(id);
 		if (product.isPresent()) {
 			return ResponseEntity.ok(new ProductDto(product.get()));
 		}
@@ -78,9 +77,9 @@ public class ProductController {
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody @Valid UpdateProductForm form) {
-		Optional<Products> optional = productsRepository.findById(id);
+		Optional<Products> optional = productsServie.findById(id);
 		if (optional.isPresent()) {
-			Products product = form.update(id, productsRepository, typeProductRepository);
+			Products product = form.update(id, productsServie, typeProductSerice);
 			return ResponseEntity.ok(new ProductDto(product));
 		}
 		return ResponseEntity.notFound().build();
@@ -89,9 +88,9 @@ public class ProductController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
-		Optional<Products> optional = productsRepository.findById(id);
+		Optional<Products> optional = productsServie.findById(id);
 		if (optional.isPresent()) {
-			productsRepository.delete(id);
+			productsServie.delete(id);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();

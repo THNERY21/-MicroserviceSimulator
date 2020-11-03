@@ -30,7 +30,7 @@ import br.com.loja.controller.form.UpdateTypeProductForm;
 import br.com.loja.dto.TypeProductConsultDto;
 import br.com.loja.model.TypeProduct;
 import br.com.loja.model.pk.TypeId;
-import br.com.loja.repository.TypeProductRepository;
+import br.com.loja.service.interfaces.TypeProductInterface;
 
 @RestController
 @RequestMapping("/typeProdcuts")
@@ -38,7 +38,7 @@ public class TypeProductController {
 
 
 	@Autowired
-	private TypeProductRepository typeProductRepository;
+	private TypeProductInterface typeProductSerice;
 
 	@GetMapping
 	@Cacheable(value = "typeList")
@@ -46,10 +46,10 @@ public class TypeProductController {
 			@PageableDefault(sort = "id", direction = Direction.ASC, page =0, size=10) Pageable pagination) {
 
 		if (name != null) {
-			Page<TypeProduct> typeProduct = typeProductRepository.findByid_NameType(name, pagination);
+			Page<TypeProduct> typeProduct = typeProductSerice.findByid_NameType(name, pagination);
 			return TypeProductConsultDto.convertTypeList(typeProduct);
 		} else {
-			Page<TypeProduct> typeProduct =typeProductRepository.findAll(pagination);
+			Page<TypeProduct> typeProduct = typeProductSerice.findAll(pagination);
 			return TypeProductConsultDto.convertTypeList(typeProduct);
 		}
 	}
@@ -59,9 +59,9 @@ public class TypeProductController {
 	@CacheEvict(value = "typeList", allEntries = true)
 	public ResponseEntity<TypeProductConsultDto> registerTypeProduct(@RequestBody @Valid TypeProductForm typeProductForm,
 			UriComponentsBuilder uriBuilder) {
-		TypeProduct typeProduct = typeProductForm.convert(typeProductRepository);
+		TypeProduct typeProduct = typeProductForm.convert(typeProductSerice);
 		if(typeProduct!=null) {
-			typeProductRepository.save(typeProduct);
+			typeProductSerice.save(typeProduct);
 			URI uri = uriBuilder.path("/prodcuts/{id}").buildAndExpand(typeProduct.getId().getName()).toUri();
 			return ResponseEntity.created(uri).body(new TypeProductConsultDto(typeProduct));
 		}
@@ -72,7 +72,7 @@ public class TypeProductController {
 	public ResponseEntity<TypeProductConsultDto> typeDetail(@PathVariable String name) {
 		TypeId id = new TypeId();
 		id.setName(name);
-		Optional<TypeProduct> typeOpt = typeProductRepository.findById(id);
+		Optional<TypeProduct> typeOpt = typeProductSerice.findById(id);
 		if (typeOpt.isPresent()) {
 			return ResponseEntity.ok(new TypeProductConsultDto(typeOpt.get()));
 		}
@@ -86,9 +86,9 @@ public class TypeProductController {
 	public ResponseEntity<TypeProductConsultDto> updateTypeProduct(@PathVariable String name, @RequestBody @Valid UpdateTypeProductForm form) {
 		TypeId id = new TypeId();
 		id.setName(name);
-		Optional<TypeProduct> typeOpt = typeProductRepository.findById(id);
+		Optional<TypeProduct> typeOpt = typeProductSerice.findById(id);
 		if (typeOpt.isPresent()) {
-			TypeProduct type = form.update(typeOpt.get(), typeProductRepository);
+			TypeProduct type = form.update(typeOpt.get());
 			return ResponseEntity.ok(new TypeProductConsultDto(type));
 		}
 		return ResponseEntity.notFound().build();
@@ -100,9 +100,9 @@ public class TypeProductController {
 	public ResponseEntity<?> deleteTypeProduct(@PathVariable String name) {
 		TypeId id = new TypeId();
 		id.setName(name);
-		Optional<TypeProduct> typeOpt = typeProductRepository.findById(id);
+		Optional<TypeProduct> typeOpt = typeProductSerice.findById(id);
 		if (typeOpt.isPresent()) {
-			typeProductRepository.deleteById(typeOpt.get().getId());
+			typeProductSerice.deleteById(typeOpt.get().getId());
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();

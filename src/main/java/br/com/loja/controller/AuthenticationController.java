@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.loja.controller.form.UserForm;
 import br.com.loja.dto.TokenDto;
-import br.com.loja.service.TokenService;
+import br.com.loja.service.interfaces.TokenServiceInterface;
 
 @RestController
 @RequestMapping("/auth")
@@ -23,7 +23,7 @@ public class AuthenticationController {
 	private AuthenticationManager authManager;
 
 	@Autowired
-	private TokenService tokenService;
+	private TokenServiceInterface tokenService;
 
 	@PostMapping
 	public ResponseEntity<?> authenticate(@RequestBody UserForm userform) {

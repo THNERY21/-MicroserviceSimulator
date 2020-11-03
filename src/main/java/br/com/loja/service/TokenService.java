@@ -7,12 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import br.com.loja.model.User;
+import br.com.loja.service.interfaces.TokenServiceInterface;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-public class TokenService {
+public class TokenService implements TokenServiceInterface{
 	
 	@Value("${loja.jwt.expiration}")
 	private String expiration;

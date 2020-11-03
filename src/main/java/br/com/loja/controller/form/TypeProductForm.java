@@ -3,6 +3,7 @@ package br.com.loja.controller.form;
 import br.com.loja.model.TypeProduct;
 import br.com.loja.model.pk.TypeId;
 import br.com.loja.repository.TypeProductRepository;
+import br.com.loja.service.interfaces.TypeProductInterface;
 
 public class TypeProductForm {
 
@@ -27,10 +28,10 @@ public class TypeProductForm {
 		return typeDescription;
 	}
 
-	public TypeProduct convert(TypeProductRepository typeProductRepository) {
+	public TypeProduct convert(TypeProductInterface typeProductSerice) {
 		TypeId id = new TypeId();
 		id.setName(name.toLowerCase());
-		TypeProduct type = typeProductRepository.findByid_NameType(id.getName());
+		TypeProduct type = typeProductSerice.findByid_NameType(id.getName());
 		if(type==null) {
 			return new TypeProduct(id,typeDescription);
 		} 
