@@ -2,7 +2,6 @@ package br.com.loja.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -11,9 +10,9 @@ import springfox.documentation.annotations.ApiIgnore;
 public class WelcomeController {
 	
 	@RequestMapping("/")
-	@ResponseBody
-	public String hello() {
-		return "Sejam bem-vindos";
-	}
+	public String index() {
+        System.out.println("swagger-ui.html");
+        return "redirect:swagger-ui.html";
+    }
 
 }
